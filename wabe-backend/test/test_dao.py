@@ -1,5 +1,4 @@
 from app.model.animals import Tove, Borogove
-from app.dao.entity_dao import persist, get_all_of_class_type
 from test.persistence_test_config import *
 from app.dao.entity_dao import DynamicEntityDao
 

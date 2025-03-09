@@ -12,10 +12,10 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = get_scoped_session(engine)
 
 def transactional(func):
-    def wrapper(*args, **kwargs):
+    def wrapper(self, *args, **kwargs):
         session = kwargs.pop('session', SessionLocal())
         try:
-            result = func(session, *args, **kwargs)
+            result = func(self, session, *args, **kwargs)
             session.commit()
             if result is not None:
                 session.expunge_all()

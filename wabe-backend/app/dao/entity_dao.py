@@ -11,6 +11,7 @@ class DynamicEntityDao:
 
     def persist(self, entity, **kwargs):
         """Persist an entity managed by ORM. Kwargs are consumed by transactional decorator."""
+        print(self, entity)
         return self.do_persist(entity=entity, **kwargs)
 
     def get_all_of_class_type(self, entity_class, **kwargs):
@@ -23,6 +24,7 @@ class DynamicEntityDao:
 
     @transactional
     def do_persist(self, session: Session, entity: DynamicEntity, **kwargs):
+        print(self, session, entity)
         return session.add(entity)
 
     @transactional
