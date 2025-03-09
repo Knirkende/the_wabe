@@ -32,15 +32,16 @@ def upgrade() -> None:
         sa.Column('locked_timestamp', sa.DateTime)
     )
     op.create_table(
-        'static_entity',
+        'terrain',
             sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
-            sa.Column('type', sa.String(10), nullable=False),
+            sa.Column('terrain_type', sa.String(10), nullable=False),
             sa.Column('x_pos', sa.Integer, nullable=False),
             sa.Column('y_pos', sa.Integer, nullable=False),
             sa.Column('condition', sa.Integer(), nullable=False)
     )
-
+    op.create_unique_constraint('uq_xpos_ypos', 'terrain', ['x_pos', 'y_pos'])
 
 def downgrade() -> None:
     op.drop_table('dynamic_entity')
-    op.drop_table('static_entity')
+    op.drop_table('terrain')
+    op.drop_constraint(constraint_name='uq_xpos_ypos', table_name='terrain', type_='unique')

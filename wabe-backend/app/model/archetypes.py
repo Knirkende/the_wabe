@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
-from sqlalchemy import String, DateTime
+from sqlalchemy import String, DateTime, UniqueConstraint
 from sqlalchemy.orm import mapped_column
 
 class PersistenceType(DeclarativeBase):
@@ -31,10 +31,18 @@ class DynamicEntity(BaseEntity, PersistenceType):
     locked_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
 
     def __repr__(self):
-        return f'Id: {self.id}, type: {self.entity_type}'
+        return f'DynamicEntity<Id: {self.id}, type: {self.entity_type}>'
 
-class Terrain(BaseEntity):
+class Terrain(BaseEntity, PersistenceType):
+
+    __tablename__ = 'terrain'
+
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, autoincrement=True)
     terrain_type: Mapped[str] = mapped_column(String(10), nullable=False)
     x_pos: Mapped[int] = mapped_column(nullable=False)
     y_pos: Mapped[int] = mapped_column(nullable=False)
+    condition: Mapped[int] = mapped_column(default = 0)
+
+    __table_args__ = (
+        UniqueConstraint('x_pos', 'y_pos', name='uq_xpos_ypos'),
+    )

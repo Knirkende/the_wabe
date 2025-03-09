@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine
 from app.dao.persistence_config import get_scoped_session
-from app.dao.entity_dao import DynamicEntityDao
+from app.dao.entity_dao import DynamicEntityDao, TerrainDao
 import pytest
+from sqlalchemy.exc import InvalidRequestError
 
 TEST_DATABASE_URL = "postgresql://test_user:test_pw@0.0.0.0/test_db"
 
@@ -19,9 +20,18 @@ def mock_pg_session():
     yield session
 
     session.close()
-    trans.rollback()
+    try:
+        if trans.is_active:
+            trans.rollback()
+    except InvalidRequestError:
+        pass
+
     conn.close()
 
 @pytest.fixture
-def test_dao():
+def test_dynamic_dao():
     return DynamicEntityDao()
+
+@pytest.fixture
+def test_terrain_dao():
+    return TerrainDao()
