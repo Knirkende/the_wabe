@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from app.dao.persistence_config import get_scoped_session
+from app.dao.entity_dao import DynamicEntityDao
 import pytest
 
 TEST_DATABASE_URL = "postgresql://test_user:test_pw@0.0.0.0/test_db"
@@ -20,3 +21,7 @@ def mock_pg_session():
     session.close()
     trans.rollback()
     conn.close()
+
+@pytest.fixture
+def test_dao():
+    return DynamicEntityDao()
