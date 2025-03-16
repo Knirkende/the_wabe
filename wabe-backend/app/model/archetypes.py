@@ -43,6 +43,8 @@ class Terrain(BaseEntity, PersistenceType):
     y_pos: Mapped[int] = mapped_column(nullable=False)
     condition: Mapped[int] = mapped_column(default = 0)
 
+    solidity: int = 100
+
     __table_args__ = (
         UniqueConstraint('x_pos', 'y_pos', name='uq_xpos_ypos'),
     )
