@@ -8,6 +8,10 @@ class Region:
     terrain: list[list[Terrain]]
 
     def __init__(self, size: int):
+
+        if size <= 0 or size % 2 == 0:
+            raise ValueError('Region size must be a positive odd integer')
+        
         self.terrain = [[Undefined() for _ in range(size)] for _ in range(size)]
     
     def get_biome_size(self, from_x: int, from_y: int) -> int:
