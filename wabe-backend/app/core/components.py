@@ -1,10 +1,11 @@
 from app.model.terrain import Undefined
+from app.model.archetypes import Terrain
 
 class Region:
     
     size: int
     seed: int
-    terrain: list[list[str]]
+    terrain: list[list[Terrain]]
 
     def __init__(self, size: int):
         self.terrain = [[Undefined() for _ in range(size)] for _ in range(size)]
