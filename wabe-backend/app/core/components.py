@@ -13,7 +13,7 @@ class Region:
         """returns the number of tiles of same type connected to tile at given coordinates"""
         return self._do_get_biome_size(from_x, from_y, 0, set())
     
-    def _do_get_biome_size(self, from_x, from_y, size, visited: list) -> int:
+    def _do_get_biome_size(self, from_x: int, from_y: int, size: int, visited: set) -> int:
         
         if (from_x, from_y) in visited:
             return 0
