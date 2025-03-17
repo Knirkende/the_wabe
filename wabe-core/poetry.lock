@@ -114,6 +114,25 @@ files = [
 ]
 
 [[package]]
+name = "kafka-python"
+version = "2.1.1"
+description = "Pure Python client for Apache Kafka"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "kafka_python-2.1.1-py2.py3-none-any.whl", hash = "sha256:710254f354670e12687b6cef07eda027bb658f42df8382885c097fed8cd972c0"},
+    {file = "kafka_python-2.1.1.tar.gz", hash = "sha256:35c6a9310fc31199274d943759573609822ef5e2d3598b3b75daa834721bfe67"},
+]
+
+[package.extras]
+crc32c = ["crc32c"]
+lz4 = ["lz4"]
+snappy = ["python-snappy"]
+testing = ["mock ; python_version < \"3.3\"", "pytest", "pytest-mock", "pytest-timeout"]
+zstd = ["zstandard"]
+
+[[package]]
 name = "packaging"
 version = "24.2"
 description = "Core utilities for Python packages"
@@ -273,4 +292,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "bdbfe9e238ee96ab7b4ae4469a88cc9326f6f2794a5607136f883eb63ea9e409"
+content-hash = "6da2a1605d1f474e05e0a5d9819f7c6c00a7387c3899f22fc18980cd20b68539"
