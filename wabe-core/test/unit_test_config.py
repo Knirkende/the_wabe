@@ -3,6 +3,8 @@ from app.dao.persistence_config import get_scoped_session
 from app.dao.entity_dao import DynamicEntityDao, TerrainDao
 import pytest
 from sqlalchemy.exc import InvalidRequestError
+from confluent_kafka import Producer
+from app.service.event_config import KAFKA_BROKER
 
 TEST_DATABASE_URL = "postgresql://test_user:test_pw@0.0.0.0/test_db"
 
@@ -35,3 +37,12 @@ def test_dynamic_dao():
 @pytest.fixture
 def test_terrain_dao():
     return TerrainDao()
+
+@pytest.fixture
+def test_kafka_producer() -> Producer:
+    return Producer(
+        {
+            "bootstrap.servers": KAFKA_BROKER,
+            "acks": "all"
+        }
+        )

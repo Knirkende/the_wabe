@@ -1,8 +1,10 @@
 from app.model.animals import Tove, Borogove
 from app.model.terrain import GrassLand
-from test.persistence_test_config import *
+from test.unit_test_config import *
 from app.dao.entity_dao import DynamicEntityDao, TerrainDao
 from sqlalchemy.exc import IntegrityError
+
+#TODO switch to test classes with base class to setup fixtures & persistence stuff
 
 def test_persist_tove(mock_pg_session, test_dynamic_dao: DynamicEntityDao):
     t = Tove(

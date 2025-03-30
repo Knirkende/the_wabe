@@ -7,7 +7,7 @@ TOPICS = [
     "wabe.client.query", # client queries from frontend
     "wabe.system.event"  # system generated events
     ]
-POLL_TIMEOUT = 1 
+POLL_TIMEOUT = 0.1 
 
 def setup_topics(topic_names: list[str] = TOPICS, num_partitions: int = 1, replication_factor: int = 1):
     admin_client = AdminClient({"bootstrap.servers": KAFKA_BROKER})
@@ -31,7 +31,9 @@ def get_consumer(topic_names: list[str] = TOPICS):
         {
             "bootstrap.servers": KAFKA_BROKER,
             "group.id": CONSUMER_GROUP_ID,
-            "auto.offset.reset": "latest"
+            "auto.offset.reset": "earliest",
+            "session.timeout.ms": 6000,
+            "max.poll.interval.ms": 10000
         }
     )
     consumer.subscribe(topic_names)
