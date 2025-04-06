@@ -2,14 +2,26 @@ from app.service.event_config import setup_topics, get_consumer,POLL_TIMEOUT
 from confluent_kafka import Consumer, KafkaError
 import signal
 import threading
+from enum import Enum
+
+class EventType(Enum):
+    NULL_EVENT = 0
+    ACQUIRE_LOCK = 1
+    MOVE = 2
 
 class Orchestrator():
 
     consumer: Consumer
     running: bool = True
+    event_handler_map: map = map({})
 
     def __init__(self):
         self.ready = threading.Event()
+
+        self.event_handler_map = {
+            EventType.ACQUIRE_LOCK : self._handle_acquire_lock,
+            EventType.MOVE : self._handle_move_action
+            }
 
         signal.signal(signal.SIGINT, self._signal_handler) # keyboard interrupt
         signal.signal(signal.SIGTERM, self._signal_handler) # k8s sigterm on graceful shutdown
@@ -32,6 +44,12 @@ class Orchestrator():
                     print(f"Oh noes, Kafka error: {msg.error()}")
                     break
                 
+                match msg.key().decode('utf-8'):
+                    case EventType.NULL_EVENT:
+                        pass
+                    case EventType.ACQUIRE_LOCK:
+                        pass
+
                 # TODO actually do stuff with message
                 print(f"Received message: {msg.key().decode('utf-8')} : {msg.value().decode('utf-8')} from {msg.topic()}")
         finally:
@@ -43,3 +61,9 @@ class Orchestrator():
 
     def _signal_handler(self, sig, frame):
         self.running = False
+
+    def _handle_acquire_lock(self):
+        pass
+
+    def _handle_move_action(self):
+        pass
